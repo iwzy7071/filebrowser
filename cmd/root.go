@@ -94,6 +94,15 @@ func init() {
 	addServerFlags(flags)
 }
 
+func defaultRootPath() string {
+	home, err := os.UserHomeDir()
+	if err != nil || home == "" {
+		return "."
+	}
+
+	return home
+}
+
 // addServerFlags adds server related flags to the given FlagSet. These flags are available
 // in both the root command, config set and config init commands.
 func addServerFlags(flags *pflag.FlagSet) {
@@ -102,7 +111,7 @@ func addServerFlags(flags *pflag.FlagSet) {
 	flags.StringP("port", "p", "8080", "port to listen on")
 	flags.StringP("cert", "t", "", "tls certificate")
 	flags.StringP("key", "k", "", "tls key")
-	flags.StringP("root", "r", ".", "root to prepend to relative paths")
+	flags.StringP("root", "r", defaultRootPath(), "root to prepend to relative paths")
 	flags.String("socket", "", "socket to listen to (cannot be used with address, port, cert nor key flags)")
 	flags.StringP("baseURL", "b", "", "base url")
 	flags.String("tokenExpirationTime", "2h", "user session timeout")

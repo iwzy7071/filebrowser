@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"runtime"
 	"testing"
 
 	"github.com/samber/lo"
@@ -11,6 +12,19 @@ import (
 // variable names for all commands and their flags.
 func TestEnvCollisions(t *testing.T) {
 	testEnvCollisions(t, rootCmd)
+}
+
+func TestDefaultRootPathUsesHomeDirectory(t *testing.T) {
+	home := t.TempDir()
+	if runtime.GOOS == "windows" {
+		t.Setenv("USERPROFILE", home)
+	} else {
+		t.Setenv("HOME", home)
+	}
+
+	if got := defaultRootPath(); got != home {
+		t.Fatalf("defaultRootPath() = %q, want %q", got, home)
+	}
 }
 
 func testEnvCollisions(t *testing.T, cmd *cobra.Command) {
