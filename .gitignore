@@ -37,3 +37,8 @@ build/
 
 default.nix
 Dockerfile.dev
+
+# Private relay account material (contains Basic Auth password and SetupKey)
+wzy.ubuntu-account.md
+wzy.ubuntu-install-linux.sh
+.install.sh
